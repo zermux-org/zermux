@@ -40,8 +40,8 @@ log "Starting Zermux installation – $(date '+%Y-%m-%d %H:%M')"
 log "Updating Termux packages..."
 termux-change-repo && pkg upgrade -y
 
-log "Installing core..."
-pkg install -y git gum glow zellij starship bat vivid carapace eza fd ripgrep zoxide fzf git-delta neovim
+log "Installing zermux-core..."
+pkg install -y git gum glow shellcheck shfmt manpages bash-completion lesspipe file wget which rlwrap clang make ripgrep fd unzip neovim termux-services termux-create-package termux-apt-repo termux-api
 
 ZERMUX_REPO="${ZERMUX_REPO:-zermux-org/zermux}"
 ZERMUX_REF="${ZERMUX_REF:-main}"
