@@ -31,18 +31,18 @@ mkdir -p ~/.config ~/.cache ~/.local/{bin,share,state} "$PREFIX/tmp"
 chmod 700 "$PREFIX/tmp"
 
 step "Copying configuration files (single source of truth)..."
-copy_config "$ZERMUX_PATH/default/bashrc"               ~/.bashrc
-copy_config "$ZERMUX_PATH/default/inputrc"               ~/.inputrc
-copy_config "$ZERMUX_PATH/config/starship.toml"          ~/.config/starship.toml
-copy_config "$ZERMUX_PATH/config/zellij"                 ~/.config/zellij                # directory
-copy_config "$ZERMUX_PATH/config/bat"                    ~/.config/bat                   # directory
-copy_config "$ZERMUX_PATH/config/carapace"               ~/.config/carapace              # directory
-copy_config "$ZERMUX_PATH/config/termux/termux.properties" ~/.termux/termux.properties
-copy_config "$ZERMUX_PATH/config/termux/colors.properties"  ~/.termux/colors.properties
+copy_config "$ZERMUX_PATH/config/bash/bashrc"               ~/.bashrc
+copy_config "$ZERMUX_PATH/config/inputrc"               ~/.inputrc
+#copy_config "$ZERMUX_PATH/config/starship.toml"          ~/.config/starship.toml
+#copy_config "$ZERMUX_PATH/config/zellij"                 ~/.config/zellij                # directory
+#copy_config "$ZERMUX_PATH/config/bat"                    ~/.config/bat                   # directory
+#copy_config "$ZERMUX_PATH/config/carapace"               ~/.config/carapace              # directory
+#copy_config "$ZERMUX_PATH/config/termux/termux.properties" ~/.termux/termux.properties
+#copy_config "$ZERMUX_PATH/config/termux/colors.properties"  ~/.termux/colors.properties
 
 mkdir -p ~/.termux/boot
-copy_config "$ZERMUX_PATH/boot.sh"                       ~/.termux/boot/00-zermux.sh
-
+copy_config "$ZERMUX_PATH/boot/start-sshd"                       ~/.termux/boot/start-sshd
+copy_config "$ZERMUX_PATH/boot/start-sshd"                       ~/.termux/boot/start-services
 step "Applying Termux settings..."
 termux-reload-settings || true
 
