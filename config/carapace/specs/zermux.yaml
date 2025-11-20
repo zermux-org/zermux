@@ -1,0 +1,60 @@
+# yaml-language-server: $schema=https://carapace.sh/schemas/command.json
+name: zermux
+description: A CLI for termux management using zellij
+
+commands:
+  # --- GROUP: pkg ---
+  # Commands for managing termux packages, running in a new zellij pane
+  - name: update
+    description: Update & upgrade termux packages in a new pane
+    group: pkg
+    # Runs 'pkg update' and then 'pkg upgrade' non-interactively
+    run: "[zellij, run, --, pkg, update, -y, &&, pkg, upgrade, -y]"
+
+  - name: install
+    description: Install a termux package in a new pane
+    group: pkg
+    run: "[zellij, run, --, pkg, install, -y]"
+    completion:
+      # Provides completion for available termux packages
+      positionalany: ["$carapace.tools.termux.Packages()"]
+
+  - name: search
+    description: Search for a termux package
+    group: pkg
+    run: "[zellij, run, --, pkg, search]"
+
+  # --- GROUP: editor ---
+  # Commands for editing files, running in a new zellij pane
+  - name: edit
+    description: Edit a file in a new zellij pane (uses hx)
+    group: editor
+    run: "[zellij, run, --, hx]" # Assumes 'hx' (helix) is installed
+    completion:
+      # Provides standard file completion
+      positionalany: ["$carapace.completers.File()"]
+
+  - name: config
+    description: Edit the zellij config file in a new pane
+    group: editor
+    run: "[zellij, run, --, hx, ~/.config/zellij/config.kdl]"
+
+  # --- GROUP: run ---
+  # Commands for managing zellij sessions directly
+  - name: attach
+    description: Attach to a running zellij session
+    group: run
+    run: "[zellij, attach]"
+    completion:
+      # Provides completion for running zellij sessions
+      positionalany: ["$carapace.tools.zellij.Sessions()"]
+
+  - name: ls
+    description: List all running zellij sessions
+    group: run
+    run: "[zellij, list-sessions]"
+
+  - name: new
+    description: Create and attach to a new named zellij session
+    group: run
+    run: "[zellij, --session]"
