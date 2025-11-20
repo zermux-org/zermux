@@ -34,9 +34,9 @@ step "Copying configuration files (single source of truth)..."
 copy_config "$ZERMUX_PATH/config/bash/bashrc"               ~/.bashrc
 copy_config "$ZERMUX_PATH/config/bash/inputrc"               ~/.inputrc
 #copy_config "$ZERMUX_PATH/config/starship.toml"          ~/.config/starship.toml
-#copy_config "$ZERMUX_PATH/config/zellij"                 ~/.config/zellij                # directory
+copy_config "$ZERMUX_PATH/config/zellij"                 ~/.config/zellij                # directory
 #copy_config "$ZERMUX_PATH/config/bat"                    ~/.config/bat                   # directory
-#copy_config "$ZERMUX_PATH/config/carapace"               ~/.config/carapace              # directory
+copy_config "$ZERMUX_PATH/config/carapace"               ~/.config/carapace              # directory
 #copy_config "$ZERMUX_PATH/config/termux/termux.properties" ~/.termux/termux.properties
 #copy_config "$ZERMUX_PATH/config/termux/colors.properties"  ~/.termux/colors.properties
 copy_config "$ZERMUX_PATH/boot/start-sshd"                       ~/.termux/boot/start-sshd
