@@ -4,7 +4,7 @@
 # Usage: curl -fsSL https://raw.githubusercontent.com/yourname/zermux/main/zermux-boot.sh | bash
 # =============================================================================
 
-#set -euo pipefail
+set -euo pipefail
 
 export ZERMUX_ONLINE_INSTALL=true
 
@@ -38,7 +38,7 @@ print_logo
 log "Starting Zermux installation – $(date '+%Y-%m-%d %H:%M')"
 
 log "Updating Termux packages..."
-termux-change-repo && yes | pkg upgrade -y
+termux-change-repo && pkg upgrade -y
 
 log "Installing zermux-core..."
 #pkg install -y git gum glow shellcheck shfmt manpages bash-completion lesspipe file wget which rlwrap clang make ripgrep fd unzip neovim termux-services termux-create-package termux-apt-repo termux-api
