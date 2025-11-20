@@ -1,0 +1,90 @@
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+# ============================================================================
+# SHELL OPTIONS
+# ============================================================================
+
+# Disable ctrl-s and ctrl-q (terminal pause)
+stty -ixon
+
+# Better history management
+shopt -s histappend              # Append to history, don't overwrite
+shopt -s checkwinsize            # Check window size after each command
+shopt -s cdspell                 # Autocorrect typos in path names when using cd
+shopt -s dirspell                # Correct directory name typos
+shopt -s autocd                  # Type directory name to cd
+shopt -s globstar                # Allow ** for recursive matching
+shopt -s nocaseglob              # Case-insensitive globbing
+shopt -s extglob                 # Extended pattern matching
+
+# ============================================================================
+# HISTORY CONFIGURATION
+# ============================================================================
+
+#export HISTSIZE=10000
+#export HISTFILESIZE=20000
+export HISTCONTROL=ignoreboth:erasedups
+export HISTIGNORE="ls:ll:cd:pwd:exit:clear:history"
+#export HISTTIMEFORMAT="%F %T "
+
+# Immediately write history
+export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+
+# ============================================================================
+# ENVIRONMENT VARIABLES
+# ============================================================================
+
+# Path configuration
+export PATH="$HOME/.local/bin:$HOME/go/bin:$HOME/.cargo/bin:$HOME/.termux/bin:$PATH"
+
+# Default editors
+export EDITOR=$(command -v nvim || command -v vim || command -v micro || echo nano)
+export VISUAL="$EDITOR"
+
+# Better less defaults
+export LESS='-R -F -X -i -P %f (%i/%m) '
+export LESSHISTFILE=/dev/null
+
+# Colored man pages
+export LESS_TERMCAP_mb=$'\e[1;32m'
+export LESS_TERMCAP_md=$'\e[1;32m'
+export LESS_TERMCAP_me=$'\e[0m'
+export LESS_TERMCAP_se=$'\e[0m'
+export LESS_TERMCAP_so=$'\e[01;33m'
+export LESS_TERMCAP_ue=$'\e[0m'
+export LESS_TERMCAP_us=$'\e[1;4;31m'
+
+# Locale
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+
+# Set XDG environment variables (export for current session; persist in .bashrc if needed).
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_STATE_HOME="$HOME/.local/state"
+#
+export USER="$(id -un)"
+export TERMINFO=/data/data/com.termux/files/usr/share/terminfo
+export EDITOR=editor
+export LS_COLORS="$(vivid generate tokyonight-night)"
+export PAGER=bat
+
+export CARAPACE_MATCH=1
+export CARAPACE_BRIDGES='zsh,fish,bash'
+
+# Load all bash configuration files
+if [ -d "$BASH_CONFIG_DIR" ]; then
+    # Load main configuration files
+    for config in "$BASH_CONFIG_DIR"/*.bash; do
+        [ -f "$config" ] && source "$config"
+    done
+    
+    # Load function files
+    if [ -d "$BASH_CONFIG_DIR/functions" ]; then
+        for func in "$BASH_CONFIG_DIR/functions"/*.bash; do
+            [ -f "$func" ] && source "$func"
+        done
+    fi
+fi
