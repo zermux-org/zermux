@@ -1,60 +1,136 @@
+# ~/.config/carapace/specs/zermux.yaml
 # yaml-language-server: $schema=https://carapace.sh/schemas/command.json
 name: zermux
-description: A CLI for termux management using zellij
+description: The ultimate reproducible Termux environment — powered by chezmoi + argc
+group: System
+parsing: non-interspersed
+
+flags:
+  -v, --verbose: Enable verbose output
+  -d, --dry-run: Simulate dangerous operations
+  -q, --quiet: Suppress informational messages
+  --debug: Enable Bash tracing (set -x)
+  -h, --help: Show help
+  --version: Show version
 
 commands:
-  # --- GROUP: pkg ---
-  # Commands for managing termux packages, running in a new zellij pane
+  # Core commands
   - name: update
-    description: Update & upgrade termux packages in a new pane
-    group: pkg
-    # Runs 'pkg update' and then 'pkg upgrade' non-interactively
-    run: "[zellij, run, --, pkg, update, -y, &&, pkg, upgrade, -y]"
+    description: Smart sync — pull latest config and apply
+    aliases: [up, sync, pull, refresh, u]
 
-  - name: install
-    description: Install a termux package in a new pane
-    group: pkg
-    run: "[zellij, run, --, pkg, install, -y]"
-    completion:
-      # Provides completion for available termux packages
-      positionalany: ["$carapace.tools.termux.Packages()"]
+  - name: apply
+    description: Apply configuration now
 
-  - name: search
-    description: Search for a termux package
-    group: pkg
-    run: "[zellij, run, --, pkg, search]"
+  - name: diff
+    description: Show what would change
 
-  # --- GROUP: editor ---
-  # Commands for editing files, running in a new zellij pane
   - name: edit
-    description: Edit a file in a new zellij pane (uses hx)
-    group: editor
-    run: "[zellij, run, --, hx]" # Assumes 'hx' (helix) is installed
+    description: Edit a managed file (live apply on save)
     completion:
-      # Provides standard file completion
-      positionalany: ["$carapace.completers.File()"]
+      positionalany:
+        - "{{ chezmoi managed --include=files --path-style=absolute | awk '{print $2 \"\\t\" $1}' }}"
 
-  - name: config
-    description: Edit the zellij config file in a new pane
-    group: editor
-    run: "[zellij, run, --, hx, ~/.config/zellij/config.kdl]"
-
-  # --- GROUP: run ---
-  # Commands for managing zellij sessions directly
-  - name: attach
-    description: Attach to a running zellij session
-    group: run
-    run: "[zellij, attach]"
+  - name: add
+    description: Add files/directories to management
+    flags:
+      -e, --encrypt: Store as encrypted secret
     completion:
-      # Provides completion for running zellij sessions
-      positionalany: ["$carapace.tools.zellij.Sessions()"]
+      positionalany: "{{ files | pathFilter }}"
 
-  - name: ls
-    description: List all running zellij sessions
-    group: run
-    run: "[zellij, list-sessions]"
+  - name: source
+    description: Open Zermux source directory
+    aliases: [src, repo]
 
-  - name: new
-    description: Create and attach to a new named zellij session
-    group: run
-    run: "[zellij, --session]"
+  - name: status
+    description: Git status
+    aliases: [st, s]
+
+  - name: push
+    description: Commit & push changes
+    flags:
+      -m, --message: Commit message
+      -a, --all: Stage all changes
+
+  # System group
+  - name: system
+    description: System diagnostics
+    commands:
+      - name: check
+        description: Full health report
+        aliases: [doctor, health, info]
+
+  - name: version
+    description: Show version
+
+  # Secrets group
+  - name: secrets
+    description: Encrypted secrets management
+    commands:
+      - name: edit
+        description: Edit encrypted secrets
+        aliases: [e]
+      - name: view
+        description: View decrypted secrets
+      - name: rekey
+        description: Rotate encryption keys
+      - name: init
+        description: Initialize age encryption
+
+  # Nuclear
+  - name: reinstall
+    description: Completely destroy and reinstall
+    flags:
+      -y, --yes, --force: Skip confirmation
+
+  # Raw access
+  - name: exec
+    description: Execute a chezmoi template
+    completion:
+      positional:
+        - "{{ chezmoi managed --include=templates --path-style=relative | sed 's/\\.tmpl$//' }}"
+
+  - name: chezmoi
+    description: Raw chezmoi passthrough
+    run: "chezmoi"
+
+completion:
+  positional:
+    - update
+    - apply
+    - diff
+    - edit
+    - add
+    - source
+    - status
+    - push
+    - system
+    - version
+    - secrets
+    - reinstall
+    - exec
+    - chezmoi
+
+  dash:
+    - --verbose
+    - --dry-run
+    - --quiet
+    - --debug
+    - --help
+    - --version
+
+documentation:
+  command: |
+    zermux — Your entire Termux universe in one command.
+
+    Running `zermux` with no arguments pulls the latest version of your dotfiles
+    and applies them instantly. All other operations are subcommands.
+
+    Everything is git-backed, encrypted where needed, and works from any directory.
+  examples:
+    "zermux": "Pull latest config and apply (default action)"
+    "zermux edit ~/.bashrc": "Live-edit your bashrc with perfect completion"
+    "zermux add ~/.config/helix --encrypt": "Start managing Helix as encrypted"
+    "zermux secrets edit": "Edit API keys / tokens safely"
+    "zermux system check": "Full health diagnostics"
+    "zermux push -m \"new starship prompt\"": "Commit and push your changes"
