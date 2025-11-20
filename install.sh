@@ -27,22 +27,20 @@ step "Installing core packages (idempotent)..."
 #pkg install -y zellij starship bat vivid carapace eza fd ripgrep zoxide fzf git-delta neovim openssh proot-distro
 pkg install -y git gum glow shellcheck shfmt manpages bash-completion lesspipe file wget which rlwrap clang make ripgrep fd unzip neovim termux-services termux-create-package termux-apt-repo termux-api zellij starship bat vivid carapace eza zoxide fzf git-delta openssh proot-distro
 step "Creating XDG directories..."
-mkdir -p ~/.config ~/.cache ~/.local/{bin,share,state} "$PREFIX/tmp"
+mkdir -p ~/.config ~/.cache ~/.local/{bin,share,state} "$PREFIX/tmp" ~/.termux/boot
 chmod 700 "$PREFIX/tmp"
 
 step "Copying configuration files (single source of truth)..."
 copy_config "$ZERMUX_PATH/config/bash/bashrc"               ~/.bashrc
 copy_config "$ZERMUX_PATH/config/inputrc"               ~/.inputrc
-#copy_config "$ZERMUX_PATH/config/starship.toml"          ~/.config/starship.toml
+copy_config "$ZERMUX_PATH/config/starship.toml"          ~/.config/starship.toml
 #copy_config "$ZERMUX_PATH/config/zellij"                 ~/.config/zellij                # directory
 #copy_config "$ZERMUX_PATH/config/bat"                    ~/.config/bat                   # directory
 #copy_config "$ZERMUX_PATH/config/carapace"               ~/.config/carapace              # directory
 #copy_config "$ZERMUX_PATH/config/termux/termux.properties" ~/.termux/termux.properties
 #copy_config "$ZERMUX_PATH/config/termux/colors.properties"  ~/.termux/colors.properties
-
-mkdir -p ~/.termux/boot
 copy_config "$ZERMUX_PATH/boot/start-sshd"                       ~/.termux/boot/start-sshd
-copy_config "$ZERMUX_PATH/boot/start-sshd"                       ~/.termux/boot/start-services
+copy_config "$ZERMUX_PATH/boot/start-services"                       ~/.termux/boot/start-services
 step "Applying Termux settings..."
 termux-reload-settings || true
 
