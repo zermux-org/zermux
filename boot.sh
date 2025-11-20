@@ -1,7 +1,3 @@
-
-### 2. `zermux-boot.sh` – Professional One-liner Online Installer
-
-```bash
 #!/usr/bin/env bash
 # =============================================================================
 # Zermux Boot Installer – Zero-boilerplate Termux Environment (2025)
