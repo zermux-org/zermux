@@ -4,7 +4,7 @@
 # Usage: curl -fsSL https://raw.githubusercontent.com/yourname/zermux/main/zermux-boot.sh | bash
 # =============================================================================
 
-set -euo pipefail
+#set -euo pipefail
 
 export ZERMUX_ONLINE_INSTALL=true
 
