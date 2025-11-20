@@ -32,8 +32,8 @@ chmod 700 "$PREFIX/tmp"
 
 step "Copying configuration files (single source of truth)..."
 copy_config "$ZERMUX_PATH/config/bash/bashrc"               ~/.bashrc
-copy_config "$ZERMUX_PATH/config/inputrc"               ~/.inputrc
-copy_config "$ZERMUX_PATH/config/starship.toml"          ~/.config/starship.toml
+copy_config "$ZERMUX_PATH/config/bash/inputrc"               ~/.inputrc
+#copy_config "$ZERMUX_PATH/config/starship.toml"          ~/.config/starship.toml
 #copy_config "$ZERMUX_PATH/config/zellij"                 ~/.config/zellij                # directory
 #copy_config "$ZERMUX_PATH/config/bat"                    ~/.config/bat                   # directory
 #copy_config "$ZERMUX_PATH/config/carapace"               ~/.config/carapace              # directory
