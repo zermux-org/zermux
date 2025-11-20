@@ -24,8 +24,8 @@ copy_config() {
 }
 
 step "Installing core packages (idempotent)..."
-pkg install -y zellij starship bat vivid carapace eza fd ripgrep zoxide fzf git-delta neovim openssh proot-distro
-
+#pkg install -y zellij starship bat vivid carapace eza fd ripgrep zoxide fzf git-delta neovim openssh proot-distro
+pkg install -y git gum glow shellcheck shfmt manpages bash-completion lesspipe file wget which rlwrap clang make ripgrep fd unzip neovim termux-services termux-create-package termux-apt-repo termux-api zellij starship bat vivid carapace eza zoxide fzf git-delta openssh proot-distro
 step "Creating XDG directories..."
 mkdir -p ~/.config ~/.cache ~/.local/{bin,share,state} "$PREFIX/tmp"
 chmod 700 "$PREFIX/tmp"
